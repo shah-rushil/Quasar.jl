@@ -717,6 +717,8 @@ function parse_qasm(clean_tokens::Vector{Tuple{Int64, Int32, Token}}, qasm::Stri
             clean_tokens = pushfirst!(clean_tokens, (start, len, token))
             expr         = parse_expression(clean_tokens, stack, start, qasm)
             push!(stack, expr)
+        elseif token == integer_token || token == float_token || token == boolean || token == string_token
+            push!(stack, parse_literal([(start, len, token)], stack, start, qasm))
         end
     end
     return stack
